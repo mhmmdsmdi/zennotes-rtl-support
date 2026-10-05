@@ -1,0 +1,309 @@
+/* ZenNotes override — پشتیبانی از متن فارسی (RTL)
+ *
+ * طریقه‌ی استفاده:
+ *  1. این فایل رو کنار example.css بذارید.
+ *  2. در Settings → Appearance → Overrides فعالش کنید.
+ *  3. اگه بخشی درست راست‌چین نشد، با دکمه‌ی Developer tools اسم کلاس
+ *     اون بخش رو پیدا کنید و به همین فایل اضافه کنید.
+ *
+ * این فایل جهت هر خط/پاراگراف رو خودکار تشخیص می‌ده:
+ * خط فارسی راست‌چین و خط انگلیسی چپ‌چین می‌شه.
+ * اگه می‌خواید همه‌چیز همیشه RTL باشه، بخش «حالت اجباری RTL» پایین رو
+ * از کامنت دربیارید.
+ */
+
+/* ===================== ادیتور (CodeMirror) ===================== */
+
+.cm-content,
+.cm-line {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
+/* ===================== پیش‌نمایش Markdown ===================== */
+
+.markdown-preview,
+.markdown-body,
+.prose {
+  unicode-bidi: plaintext;
+}
+
+.markdown-preview p,
+.markdown-preview li,
+.markdown-preview h1,
+.markdown-preview h2,
+.markdown-preview h3,
+.markdown-preview h4,
+.markdown-preview h5,
+.markdown-preview h6,
+.markdown-preview blockquote,
+.markdown-preview td,
+.markdown-preview th,
+.prose p,
+.prose li,
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6,
+.prose blockquote,
+.prose td,
+.prose th {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
+/* لیست‌ها: فاصله از سمت شروع (راست در RTL) */
+.markdown-preview ul,
+.markdown-preview ol,
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.6em;
+  padding-inline-end: 0;
+}
+
+/* نقل‌قول: خط کناری سمت شروع باشه */
+.markdown-preview blockquote,
+.prose blockquote {
+  border-left: none;
+  border-right: none;
+  border-inline-start: 3px solid rgb(var(--z-accent));
+  padding-inline-start: 1em;
+  padding-inline-end: 0;
+  margin-inline-start: 0;
+}
+
+/* جدول‌ها */
+.markdown-preview table,
+.prose table {
+  unicode-bidi: plaintext;
+}
+
+/* ===================== کد همیشه چپ‌به‌راست ===================== */
+
+pre,
+code,
+kbd,
+samp,
+.cm-content .cm-codeblock,
+.markdown-preview pre,
+.markdown-preview code,
+.prose pre,
+.prose code {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: left;
+}
+
+/* ===================== فیلدهای ورودی (جستجو، عنوان و …) ===================== */
+
+input[type="text"],
+input[type="search"],
+textarea {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+
+/* ===================== حالت اجباری RTL (اختیاری) =====================
+ * اگه همیشه می‌خواید کل متن راست‌چین باشه، این بلوک رو از کامنت دربیارید
+ * و بخش «ادیتور» و «پیش‌نمایش» بالا رو حذف یا کامنت کنید.
+ */
+/*
+.cm-content,
+.cm-line,
+.markdown-preview,
+.markdown-body,
+.prose {
+  direction: rtl;
+  unicode-bidi: normal;
+  text-align: right;
+}
+*/
+
+/* ===================== راه‌حل جایگزین برای پیش‌نمایش =====================
+ * اگه اسم کلاس پیش‌نمایش رو نمی‌دونید، این قاعده‌ها مستقیم روی تگ‌های متنی
+ * اعمال می‌شن و به کلاس وابسته نیستن. !important برای اینه که استایل خود
+ * برنامه روشون غلبه نکنه.
+ */
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+td,
+th,
+dt,
+dd,
+figcaption {
+  unicode-bidi: plaintext !important;
+  text-align: start !important;
+}
+
+/* لیست‌ها و نقل‌قول داخل پیش‌نمایش */
+li > ul,
+li > ol {
+  padding-inline-start: 1.6em;
+  padding-inline-end: 0;
+}
+
+blockquote {
+  border-left: none !important;
+  border-inline-start: 3px solid rgb(var(--z-accent)) !important;
+  padding-inline-start: 1em !important;
+  padding-inline-end: 0 !important;
+}
+
+/* کد همیشه LTR بمونه (دوباره، با اولویت بالاتر) */
+pre,
+code {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  text-align: left !important;
+}
+
+/* ===================== لیست‌ها (بولت و شماره‌دار) =====================
+ * جای نقطه/شماره به خاصیت direction خودِ لیست بستگی داره، نه فقط به متن.
+ * CSS نمی‌تونه برای هر لیست زبانش رو تشخیص بده، پس لیست‌ها RTL اجباری می‌شن.
+ * padding-left رو صفر می‌کنیم چون خود برنامه احتمالاً با اون فاصله می‌ده.
+ */
+ul,
+ol {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-left: 0 !important;
+  padding-right: 1.6em !important;
+}
+
+li {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* لیست‌های تو در تو */
+li > ul,
+li > ol {
+  padding-left: 0 !important;
+  padding-right: 1.6em !important;
+}
+
+/* چک‌باکس‌ها (- [ ] کار) */
+li > input[type="checkbox"],
+.task-list-item input[type="checkbox"] {
+  margin-left: 0.5em !important;
+  margin-right: 0 !important;
+}
+
+/* ===================== یکسان‌سازی فاصله‌ها (ادیت و پریویو) =====================
+ * برای تنظیم، فقط این دو عدد رو عوض کنید:
+ *   --rtl-line-height : فاصله‌ی بین خطوط
+ *   --rtl-gap         : فاصله‌ی بین پاراگراف‌ها و لیست‌ها
+ * فونت فارسی معمولاً ارتفاع خط بیشتری می‌خواد، پس 1.8 شروع خوبیه.
+ */
+:root[data-theme] {
+  --rtl-line-height: 1.8;
+  --rtl-gap: 0.6em;
+}
+
+/* ادیتور */
+.cm-line {
+  line-height: var(--rtl-line-height) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* پریویو */
+p,
+li,
+blockquote,
+td,
+th {
+  line-height: var(--rtl-line-height) !important;
+}
+
+p,
+blockquote {
+  margin-top: var(--rtl-gap) !important;
+  margin-bottom: var(--rtl-gap) !important;
+}
+
+ul,
+ol {
+  margin-top: var(--rtl-gap) !important;
+  margin-bottom: var(--rtl-gap) !important;
+}
+
+li {
+  margin-top: 0.15em !important;
+  margin-bottom: 0.15em !important;
+}
+
+li > p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.5 !important;
+  margin-top: 1em !important;
+  margin-bottom: 0.4em !important;
+}
+
+/* ===================== فونت وزیرمتن (Vazirmatn) =====================
+ * چون ZenNotes آدرس‌های اینترنتی (remote URL) رو لود نمی‌کنه، فونت باید روی
+ * سیستم شما نصب باشه (https://github.com/rastikerdar/vazirmatn).
+ * unicode-range باعث می‌شه فقط حروف فارسی/عربی با وزیرمتن نمایش داده بشن
+ * و حروف انگلیسی با فونت بعدی (system-ui) بمونن.
+ */
+@font-face {
+  font-family: "VazirmatnFA";
+  font-weight: 400;
+  font-style: normal;
+  src: local("Vazirmatn"), local("Vazirmatn Regular"), local("Vazirmatn-Regular");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+
+@font-face {
+  font-family: "VazirmatnFA";
+  font-weight: 700;
+  font-style: normal;
+  src: local("Vazirmatn Bold"), local("Vazirmatn-Bold"), local("Vazirmatn");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F;
+}
+
+/* ادیتور و پریویو (کد دست نمی‌خوره و مونواسپیس می‌مونه) */
+.cm-content,
+.cm-line,
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+td,
+th,
+input[type="text"],
+input[type="search"],
+textarea {
+  font-family: "VazirmatnFA", "Vazirmatn", system-ui, -apple-system, "Segoe UI", sans-serif !important;
+}
+
+/* بلوک‌ها و کد با فونت مونواسپیس خودشون */
+pre,
+code,
+kbd,
+samp {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace !important;
+}
